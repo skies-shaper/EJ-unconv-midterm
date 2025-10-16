@@ -2,7 +2,10 @@ const renderNode = document.getElementById("render")
 const render = renderNode.getContext("2d")
 
 let img = {}
-
+let credits = [
+    { text: "Inspiration from graphic visualizations at https://pudding.cool", yRanges: [[0, 100000]] },
+    { text: "Font - National Park (Google Fonts)", yRanges: [[0, 100000]] },
+]
 let renderDataItemTemplates = {
 
     textNode: {
@@ -31,35 +34,46 @@ let anchors = [
     0, 2000, 2200
 ]
 
+let auto = 101001
+
 let renderData = [
     {
         type: "text",
         fontSize: 80,
-        content: "Environmental Justice in XXX",
+        content: "Environmental Justice in the age of Big Data and Artificial Intelligence",
         fillColor: screenData.fills.neatGreen,
         leftMargin: "centerText",
         yPos: 10,
-        scrollLockInterval: [0, 300],
-        height: 80,
+        scrollLockInterval: [0, 230],
+        height: auto
     },
     {
         type: "text",
-        fontSize: 20,
+        fontSize: 30,
         content: "Alexander Shapinsky",
 
         fillColor: "#19b6e5",
         leftMargin: "centerText",
-        yPos: 100,
-        height: 15,
+        yPos: screenData.height / 2 - 15,
+        height: auto,
     },
     {
         type: "text",
-        fontSize: 10,
+        fontSize: 15,
         content: "NRES 224 - Environmental and Climate Justice",
         fillColor: screenData.fills.neatGreen,
         leftMargin: "centerText",
-        yPos: 120,
-        height: 10,
+        yPos: auto,
+        height: auto,
+    },
+    {
+        type: "text",
+        fontSize: 30,
+        content: "It is imperative to note",
+        fillColor: screenData.fills.neatGreen,
+        leftMargin: 10,
+        yPos: screenData.height,
+        height: auto,
     },
     {
         type: "text",
@@ -81,7 +95,7 @@ let renderData = [
     },
     {
         type: "animObj",
-        src: "bob",
+        src: "",
         xEqn: () => {
             return Math.sin(scrollDistance / 50) * 50 + 60
         },
@@ -96,7 +110,7 @@ let renderData = [
     },
     {
         type: "animObj",
-        src: "bob",
+        src: "",
         yPos: 500,
         xEqn: 300,
         height: 300
@@ -153,7 +167,6 @@ function screenUpdate() {
     if (autoScrolling) {
         let s = (anchors[autoscrollTo] - scrollFrom) //distance to travel //target time = 1 second, 100 fps
         scrollDistance += s / 100 + autoscrollAcc
-        console.log((anchors[autoscrollTo] - scrollDistance) / s)
         if ((anchors[autoscrollTo] - scrollDistance) / s > .5) {
             autoscrollAcc += s / 200
         }
@@ -183,6 +196,7 @@ function renderNextButton() {
     renderNode.addEventListener("mouseup", () => {
         if (mouseInRegion((screenData.width / 2) - img.nextButton.width / 4, screenData.height - img.nextButton.height / 2 - 10 + 5 * Math.sin(ticks * Math.PI / 50), img.nextButton.width / 2, img.nextButton.height / 2)) {
             autoScrolling = true
+
             autoscrollAcc = 0
             scrollFrom = scrollDistance
             autoscrollTo = currentAnchor + 1
@@ -226,6 +240,7 @@ function calcMaxLayer() {
     return maxLayer + 1
 }
 
+let AutoYoffset = 0
 function drawDocument() {
     // render.fillStyle = "red"
     // render.fillRect(100, 200 - scrollDistance, 50, 50)
@@ -234,6 +249,7 @@ function drawDocument() {
     // render.fillText(mouseX, 20, 30)
     // render.fillText(mouseY, 20, 40)
     maxLayer = calcMaxLayer()
+    AutoYoffset = 0
     for (let i = 0; i < calcMaxLayer(); i++) {
         for (let renderItem of renderData) {
             if (renderItem.layer == i) {
@@ -241,41 +257,68 @@ function drawDocument() {
             }
         }
     }
+    AutoYoffset = 0
     for (let renderItem of renderData) {
         if (renderItem.layer == undefined) {
             renderScrnObj(renderItem)
-
         }
     }
     // clearInterval(globalRenderInterval)
 }
-
 function renderScrnObj(renderItem) {
-    // if (renderItem.yPos + renderItem.height < scrollDistance || renderItem.yPos > scrollDistance + screenData.height) {
-    //     return
-    // }
     render.fillStyle = renderItem.fillColor
+    setFont(renderItem.fontSize)
+
+    if (renderItem.height == auto) {
+        renderItem.height = (distributeText(renderItem.content, screenData.width).length) * renderItem.fontSize
+    }
+    if (renderItem.yPos == auto) {
+        renderItem.yPos = AutoYoffset
+        // console.log(renderItem.yPos)
+    } else {
+        AutoYoffset = renderItem.yPos
+    }
     try {
-        let yPos = renderItem.yPos - scrollDistance + renderItem.height
+        AutoYoffset += renderItem.height
+        let yPos = renderItem.yPos - scrollDistance
         if (renderItem.scrollLockInterval != undefined) {
             if (scrollDistance >= renderItem.scrollLockInterval[0] && scrollDistance <= renderItem.scrollLockInterval[1]) {
-                yPos = renderItem.yPos - renderItem.scrollLockInterval[0] + renderItem.height
+                yPos = renderItem.yPos - renderItem.scrollLockInterval[0]
             } else {
-                yPos = renderItem.scrollLockInterval[1] + renderItem.yPos - scrollDistance + renderItem.height
+                yPos = renderItem.scrollLockInterval[1] + renderItem.yPos - scrollDistance
             }
-
         }
-
+        if (renderItem.type == "text" && renderItem.height == (distributeText(renderItem.content, screenData.width).length) * renderItem.fontSize) {
+            yPos += renderItem.fontSize
+        }
+        else {
+            yPos += renderItem.height
+        }
         switch (renderItem.type) {
+
             case "text": {
-                setFont(renderItem.fontSize)
-                if (renderItem.leftMargin = "centerText") {
-                    render.fillText(renderItem.content, (screenData.width - render.measureText(renderItem.content).width) / 2, yPos)
+                let words = distributeText(renderItem.content, screenData.width)
+
+                if (renderItem.leftMargin == "centerText") {
+                    for (let i = 0; i < words.length; i++) {
+                        render.fillText(words[i], (screenData.width - render.measureText(words[i]).width) / 2, yPos + i * renderItem.fontSize)
+                    }
+                    break;
                 }
+                console.log(renderItem.leftMargin)
+                for (let i = 0; i < words.length; i++) {
+                    render.fillText(words[i], renderItem.leftMargin, yPos + i * renderItem.fontSize)
+                }
+
                 break;
             }
             case "animObj": {
-                render.drawImage(img[renderItem.src].data, typeof renderItem.xEqn === 'function' ? renderItem.xEqn() : renderItem.xEqn, yPos)
+                try {
+                    render.drawImage(img[renderItem.src].data, typeof renderItem.xEqn === 'function' ? renderItem.xEqn() : renderItem.xEqn, yPos)
+                }
+                catch (e) {
+
+                }
                 break
             }
             case "obj": {
@@ -297,21 +340,67 @@ function renderCreditsPopup() {
     let CB_offsetX = 10
     let CB_offsetY = 10
     let CB_bigWidth = 140
-    let CB_bigHeight = 140
+    let CB_bigHeight = 4
+    let sum = 0
+    setFont(10)
+    for (let i = 0; i < credits.length; i++) {
+        for (let j = 0; j < credits[i].yRanges.length; j++) {
+            if (scrollDistance >= credits[i].yRanges[j][0] && scrollDistance <= credits[i].yRanges[j][1]) {
+                let dist = distributeText("[" + [i + 1] + "]: " + credits[i].text, CB_bigWidth - 2)
+                sum++
+                CB_bigHeight += 10
+                for (let j = 1; j < dist.length; j++) {
+                    CB_bigHeight += 10
+                    sum++
+                }
+                break;
+            }
+        }
+    }
 
-    render.fillStyle = screenData.fills.neatGreen
     render.fillRect(screenData.width - (CB_smallWidth + CB_offsetX), screenData.height - (CB_smallHeight + CB_offsetY), CB_smallWidth, CB_smallHeight)
+
+    let citationText = "1"
+    for (let i = 1; i < credits.length; i++) {
+        for (let j = 0; j < credits[i].yRanges.length; j++) {
+
+            if (scrollDistance >= credits[i].yRanges[j][0] && scrollDistance <= credits[i].yRanges[j][1]) {
+                citationText += ", " + (i + 1)
+            }
+        }
+    }
+    setFont(10)
+    render.fillStyle = "black"
+    let d = distributeText(citationText, CB_smallWidth - 5)
+
+    for (let i = 0; i < d.length; i++) {
+        render.fillText(d[i], screenData.width - CB_smallWidth - CB_offsetX + 5, screenData.height - CB_smallHeight + i * 10)
+    }
+    render.fillStyle = screenData.fills.neatGreen
 
     if ((mouseInRegion(screenData.width - (CB_smallWidth + CB_offsetX), screenData.height - (CB_smallHeight + CB_offsetY), CB_smallWidth, CB_smallHeight) && mouseDown) || (screenData.data.showCreditsBox && mouseInRegion(screenData.width - (CB_bigWidth + CB_offsetX), screenData.height - (CB_bigHeight + CB_offsetX), CB_bigWidth, CB_bigHeight))) {
         screenData.data.showCreditsBox = true
         render.fillRect(screenData.width - (CB_bigWidth + CB_offsetX), screenData.height - (CB_bigHeight + CB_offsetX), CB_bigWidth, CB_bigHeight)
+        let sum = 0
+        render.fillStyle = "black"
+        for (let i = 0; i < credits.length; i++) {
+            for (let j = 0; j < credits[i].yRanges.length; j++) {
+                if (scrollDistance >= credits[i].yRanges[j][0] && scrollDistance <= credits[i].yRanges[j][1]) {
+                    let dist = distributeText("[" + [i + 1] + "]: " + credits[i].text, CB_bigWidth - 2)
+                    render.fillText(dist[0], screenData.width - CB_bigWidth - CB_offsetX + 2, screenData.height - CB_bigHeight + sum * 10)
+                    sum++
+                    for (let j = 1; j < dist.length; j++) {
+                        render.fillText(dist[j], screenData.width - CB_bigWidth + 10, screenData.height - CB_bigHeight + sum * 10)
+                        sum++
+                    }
+                    break;
+                }
+            }
+        }
     }
     else {
         screenData.data.showCreditsBox = false
     }
-
-    let credits = ["Inspiration from graphic visualizations at https://pudding.cool", "Font - National Park (Google Fonts)"]
-
 }
 
 
@@ -335,31 +424,33 @@ function setFont(pxSize) {
     render.font = pxSize + "px " + "National Park"
 }
 
-function calculateTextHeight(text, pixelwidth) {
+function distributeText(text, lineWidth) {
+    /*
+    TO DO HERE - ADD WRAPPING FOR SUPER LONG WORDS (LIKE URLS!)
+    */
     let textArray = []
-    let charWidth = screen.measureText("1").width / screenData.scale
-    let maxCharWidth = Math.floor(pixelwidth / charWidth)
-    let EOLL = 0
-    for (let i = 0; i < text.length; i++) {
-        if (i - EOLL >= maxCharWidth) {
-            if (text.charAt(i) == " ") {
-                textArray.push(text.substring(EOLL, i))
-                i++
-            }
-            else {
-                while (text.charAt(i) != " ") {
-                    i--
-                    if (i < 0) {
-                        i = text.length
-                        break;
-                    }
-                }
-                textArray.push(text.substring(EOLL, i))
-                i++
-            }
-            EOLL = i
+    let arr = text.split(" ")
+    let WARN = 0
+    let i = 0
+    while ((i < arr.length) && WARN < 1000) {
+        textArray.push("")
+
+        while (WARN < 1000 && render.measureText(arr[i] + " ").width + render.measureText(textArray[textArray.length - 1]).width < lineWidth && i < arr.length) {
+            textArray[textArray.length - 1] += arr[i] + " "
+            i++
+            WARN++
         }
+        WARN++
     }
-    textArray.push(text.substring(EOLL))
+    for (let i = 0; i < textArray.length; i++) {
+        textArray[i] = textArray[i].substring(0, textArray[i].length - 1)
+    }
+
+    if (WARN >= 998) {
+        // console.log(textArray)
+        // console.log(arr)
+        return [""]
+    }
+    // console.log(WARN)
     return textArray
 }
