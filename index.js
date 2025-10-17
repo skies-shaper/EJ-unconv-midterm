@@ -1,3 +1,5 @@
+let scrollDistance = 0
+
 const renderNode = document.getElementById("render")
 const render = renderNode.getContext("2d")
 
@@ -69,10 +71,11 @@ let renderData = [
     {
         type: "text",
         fontSize: 30,
-        content: "It is imperative to note",
+        content: () => { return `this is a test of ${scrollDistance} a plan` },
         fillColor: screenData.fills.neatGreen,
         leftMargin: 10,
-        yPos: screenData.height,
+        yPos: screenData.height * 2,
+        scrollLockInterval: [screenData.height * 2 - 100, screenData.height * 3],
         height: auto,
     },
     {
@@ -114,10 +117,9 @@ let renderData = [
         yPos: 500,
         xEqn: 300,
         height: 300
-    }
+    },
 ]
 
-let scrollDistance = 0
 let ticks = 0
 let mouseX = 0
 let mouseY = 0
@@ -200,6 +202,10 @@ function renderNextButton() {
             autoscrollAcc = 0
             scrollFrom = scrollDistance
             autoscrollTo = currentAnchor + 1
+            if (autoscrollTo == anchors.length) {
+                autoscrollTo--
+                autoScrolling = false
+            }
         }
     })
 
@@ -268,9 +274,15 @@ function drawDocument() {
 function renderScrnObj(renderItem) {
     render.fillStyle = renderItem.fillColor
     setFont(renderItem.fontSize)
-
+    var content = ""
+    if (typeof renderItem.content == "function") {
+        content = renderItem.content()
+    }
+    else {
+        content = renderItem.content
+    }
     if (renderItem.height == auto) {
-        renderItem.height = (distributeText(renderItem.content, screenData.width).length) * renderItem.fontSize
+        renderItem.height = (distributeText(content, screenData.width).length) * renderItem.fontSize
     }
     if (renderItem.yPos == auto) {
         renderItem.yPos = AutoYoffset
@@ -280,15 +292,22 @@ function renderScrnObj(renderItem) {
     }
     try {
         AutoYoffset += renderItem.height
+        let width = typeof renderItem.width === "function" ? renderItem.width() : renderItem.width
+        let xPos = typeof renderItem.xEqn === 'function' ? renderItem.xEqn() : renderItem.xEqn
         let yPos = renderItem.yPos - scrollDistance
+        /*
+        If
+        */
         if (renderItem.scrollLockInterval != undefined) {
             if (scrollDistance >= renderItem.scrollLockInterval[0] && scrollDistance <= renderItem.scrollLockInterval[1]) {
                 yPos = renderItem.yPos - renderItem.scrollLockInterval[0]
+            } else if (scrollDistance > renderItem.scrollLockInterval[1]) {
+                yPos = renderItem.yPos - (scrollDistance - (renderItem.scrollLockInterval[1] - renderItem.scrollLockInterval[0]))
             } else {
-                yPos = renderItem.scrollLockInterval[1] + renderItem.yPos - scrollDistance
+                yPos = renderItem.yPos - scrollDistance
             }
         }
-        if (renderItem.type == "text" && renderItem.height == (distributeText(renderItem.content, screenData.width).length) * renderItem.fontSize) {
+        if (renderItem.type == "text" && renderItem.height == (distributeText(content, screenData.width).length) * renderItem.fontSize) {
             yPos += renderItem.fontSize
         }
         else {
@@ -297,7 +316,7 @@ function renderScrnObj(renderItem) {
         switch (renderItem.type) {
 
             case "text": {
-                let words = distributeText(renderItem.content, screenData.width)
+                let words = distributeText(content, screenData.width)
 
                 if (renderItem.leftMargin == "centerText") {
                     for (let i = 0; i < words.length; i++) {
@@ -305,7 +324,6 @@ function renderScrnObj(renderItem) {
                     }
                     break;
                 }
-                console.log(renderItem.leftMargin)
                 for (let i = 0; i < words.length; i++) {
                     render.fillText(words[i], renderItem.leftMargin, yPos + i * renderItem.fontSize)
                 }
@@ -314,7 +332,7 @@ function renderScrnObj(renderItem) {
             }
             case "animObj": {
                 try {
-                    render.drawImage(img[renderItem.src].data, typeof renderItem.xEqn === 'function' ? renderItem.xEqn() : renderItem.xEqn, yPos)
+                    render.drawImage(img[renderItem.src].data, xPos, yPos)
                 }
                 catch (e) {
 
@@ -326,6 +344,10 @@ function renderScrnObj(renderItem) {
                 render.fillRect(0, 0, screenData.width, yPos)
                 break
             }
+            case "rect": {
+                render.fillStyle = renderItem.fillColor
+                render.fillRect(xPos, yPos, width, renderItem.height)
+            }
         }
     }
     catch (e) {
@@ -335,6 +357,7 @@ function renderScrnObj(renderItem) {
 }
 
 function renderCreditsPopup() {
+    render.fillStyle = screenData.fills.neatGreen
     let CB_smallWidth = 40
     let CB_smallHeight = 40
     let CB_offsetX = 10
