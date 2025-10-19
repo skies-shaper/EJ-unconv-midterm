@@ -1,13 +1,35 @@
 let scrollDistance = 0
+let GLOBALDEBUG
 
 const renderNode = document.getElementById("render")
 const render = renderNode.getContext("2d")
-
+let screenData = {
+    width: window.innerWidth,
+    height: window.innerHeight,
+    fills: {
+        neatGreen: "#6eb465",
+        neatGreen_highlight: "#8ab485",
+        highligter: "#f8e51089"
+    },
+    data: {
+        showCreditsBox: false
+    }
+}
+window.onresize = () => {
+    window.location = window.location
+}
 let img = {}
 let credits = [
     { text: "Inspiration from graphic visualizations at https://pudding.cool", yRanges: [[0, 100000]] },
     { text: "Font - National Park (Google Fonts)", yRanges: [[0, 100000]] },
 ]
+
+let positionRefNodes = {
+    "intro": screenData.height,
+    "Eorder": screenData.height * 4,
+}
+
+
 let renderDataItemTemplates = {
 
     textNode: {
@@ -21,17 +43,7 @@ let renderDataItemTemplates = {
 
 }
 let scrollFrom = -1
-let screenData = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    fills: {
-        neatGreen: "#6eb465",
-        neatGreen_highlight: "#8ab485"
-    },
-    data: {
-        showCreditsBox: false
-    }
-}
+
 let anchors = [
     0, 2000, 2200
 ]
@@ -46,7 +58,7 @@ let renderData = [
         fillColor: screenData.fills.neatGreen,
         leftMargin: "centerText",
         yPos: 10,
-        scrollLockInterval: [0, 230],
+        scrollLockInterval: [0, distributeText("Environmental Justice in the age of Big Data and Artificial Intelligence").length * 80],
         height: auto
     },
     {
@@ -67,56 +79,6 @@ let renderData = [
         leftMargin: "centerText",
         yPos: auto,
         height: auto,
-    },
-    {
-        type: "text",
-        fontSize: 30,
-        content: () => { return `this is a test of ${scrollDistance} a plan` },
-        fillColor: screenData.fills.neatGreen,
-        leftMargin: 10,
-        yPos: screenData.height * 2,
-        scrollLockInterval: [screenData.height * 2 - 100, screenData.height * 3],
-        height: auto,
-    },
-    {
-        type: "text",
-        fontSize: 10,
-        content: "words",
-        fillColor: screenData.fills.neatGreen,
-        leftMargin: "centerText",
-        yPos: 1500,
-        height: 10,
-    },
-    {
-        type: "text",
-        fontSize: 80,
-        content: "Title Numero 2",
-        fillColor: screenData.fills.neatGreen,
-        leftMargin: "centerText",
-        yPos: 2000,
-        height: 85,
-    },
-    {
-        type: "animObj",
-        src: "",
-        xEqn: () => {
-            return Math.sin(scrollDistance / 50) * 50 + 60
-        },
-        yPos: 200,
-        scrollLockInterval: [0, 300],
-        height: 300
-    },
-    {
-        type: "obj",
-        yPos: 200,
-        layer: 0
-    },
-    {
-        type: "animObj",
-        src: "",
-        yPos: 500,
-        xEqn: 300,
-        height: 300
     },
 ]
 
@@ -212,9 +174,15 @@ function renderNextButton() {
 }
 
 function init() {
+    for (let i in renderDataAdditions) {
+        renderData.push(renderDataAdditions[i])
+    }
     img = {
         nextButton: { data: document.getElementById("progressButton"), width: 500, height: 68 },
-        bob: { data: document.getElementById("bob"), width: 300, height: 300 }
+        bob: { data: document.getElementById("bob"), width: 300, height: 300 },
+        screenshot: { data: document.getElementById("screenshot"), width: 811, height: 403 },
+        phone: { data: document.getElementById("phone"), width: 400, height: 680 }
+
     }
 
     //method for making look better on retina displays, see https://coderwall.com/p/vmkk6a/how-to-make-the-canvas-not-look-like-crap-on-retina
@@ -251,7 +219,9 @@ function drawDocument() {
     // render.fillStyle = "red"
     // render.fillRect(100, 200 - scrollDistance, 50, 50)
     // Debug info!
-    render.fillText(scrollDistance, 20, 20)
+    if (GLOBALDEBUG) {
+        render.fillText(scrollDistance, 20, 20)
+    }
     // render.fillText(mouseX, 20, 30)
     // render.fillText(mouseY, 20, 40)
     maxLayer = calcMaxLayer()
@@ -275,64 +245,93 @@ function renderScrnObj(renderItem) {
     render.fillStyle = renderItem.fillColor
     setFont(renderItem.fontSize)
     var content = ""
+    let height = renderItem.height
+
     if (typeof renderItem.content == "function") {
         content = renderItem.content()
     }
     else {
         content = renderItem.content
     }
+    let textDist = []
+
     if (renderItem.height == auto) {
-        renderItem.height = (distributeText(content, screenData.width).length) * renderItem.fontSize
-    }
-    if (renderItem.yPos == auto) {
-        renderItem.yPos = AutoYoffset
-        // console.log(renderItem.yPos)
+        if (renderItem.leftMargin != "centerText") {
+            textDist = distributeText(content, screenData.width - (2 * renderItem.leftMargin))
+            height = (textDist.length) * renderItem.fontSize
+        }
+        else {
+            textDist = distributeText(content, screenData.width)
+            height = (textDist.length) * renderItem.fontSize
+        }
     } else {
+        if (renderItem.type == "text") {
+            if (renderItem.leftMargin != "centerText") {
+                textDist = distributeText(content, screenData.width - (2 * renderItem.leftMargin))
+            }
+            else {
+                textDist = distributeText(content, screenData.width)
+            }
+        }
+
+    }
+
+    if (renderItem.yPos == auto) {
+        console.log("auto y pos")
+    }
+    if (renderItem.yPos != auto) {
         AutoYoffset = renderItem.yPos
     }
     try {
-        AutoYoffset += renderItem.height
+        let renderYPos = ((renderItem.yPos == auto) ? AutoYoffset : renderItem.yPos)
         let width = typeof renderItem.width === "function" ? renderItem.width() : renderItem.width
         let xPos = typeof renderItem.xEqn === 'function' ? renderItem.xEqn() : renderItem.xEqn
-        let yPos = renderItem.yPos - scrollDistance
-        /*
-        If
-        */
+        let yPos = renderYPos - scrollDistance
+        let scale = 1
+        if (typeof renderItem.scale == "function") {
+            scale = renderItem.scale()
+        } else if (typeof renderItem.scale != "undefined") {
+            scale = renderItem.scale
+        }
+        height *= scale
+        AutoYoffset += height * (typeof renderItem.arrHeight != "undefined" ? renderItem.arrHeight : 1) + (typeof renderItem.arrHeight != "undefined" ? renderItem.arrHeight * renderItem.ySpacing * scale : 0)
+
+        AutoYoffset += (renderItem.bottomMargin != undefined ? renderItem.bottomMargin : 0)
+
         if (renderItem.scrollLockInterval != undefined) {
             if (scrollDistance >= renderItem.scrollLockInterval[0] && scrollDistance <= renderItem.scrollLockInterval[1]) {
-                yPos = renderItem.yPos - renderItem.scrollLockInterval[0]
+                yPos = renderYPos - renderItem.scrollLockInterval[0]
             } else if (scrollDistance > renderItem.scrollLockInterval[1]) {
-                yPos = renderItem.yPos - (scrollDistance - (renderItem.scrollLockInterval[1] - renderItem.scrollLockInterval[0]))
+                yPos = renderYPos - (scrollDistance - (renderItem.scrollLockInterval[1] - renderItem.scrollLockInterval[0]))
             } else {
-                yPos = renderItem.yPos - scrollDistance
+                yPos = renderYPos - scrollDistance
             }
         }
-        if (renderItem.type == "text" && renderItem.height == (distributeText(content, screenData.width).length) * renderItem.fontSize) {
+        if (renderItem.type == "text" && height == (textDist.length) * renderItem.fontSize) {
             yPos += renderItem.fontSize
         }
         else {
-            yPos += renderItem.height
+            yPos += height
         }
         switch (renderItem.type) {
 
             case "text": {
-                let words = distributeText(content, screenData.width)
-
                 if (renderItem.leftMargin == "centerText") {
-                    for (let i = 0; i < words.length; i++) {
-                        render.fillText(words[i], (screenData.width - render.measureText(words[i]).width) / 2, yPos + i * renderItem.fontSize)
+                    for (let i = 0; i < textDist.length; i++) {
+                        render.fillText(textDist[i], (screenData.width - render.measureText(textDist[i]).width) / 2, yPos + i * renderItem.fontSize)
                     }
                     break;
                 }
-                for (let i = 0; i < words.length; i++) {
-                    render.fillText(words[i], renderItem.leftMargin, yPos + i * renderItem.fontSize)
+                for (let i = 0; i < textDist.length; i++) {
+                    render.fillText(textDist[i], renderItem.leftMargin, yPos + i * renderItem.fontSize)
                 }
 
                 break;
             }
             case "animObj": {
+
                 try {
-                    render.drawImage(img[renderItem.src].data, xPos, yPos)
+                    render.drawImage(img[renderItem.src].data, xPos, yPos - height, img[renderItem.src].width * scale, img[renderItem.src].height * scale)
                 }
                 catch (e) {
 
@@ -346,7 +345,16 @@ function renderScrnObj(renderItem) {
             }
             case "rect": {
                 render.fillStyle = renderItem.fillColor
-                render.fillRect(xPos, yPos, width, renderItem.height)
+                render.fillRect(xPos, yPos, width, height)
+                break;
+            }
+            case "imgArr": {
+                for (let i = 0; i < renderItem.arrHeight; i++) {
+                    for (let j = 0; j < renderItem.arrWidth; j++) {
+                        if (yPos - height + (i * (height + (renderItem.ySpacing * scale))) > (-height) && yPos - height + (i * (height + (renderItem.ySpacing * scale))) < (screenData.height + height))
+                            render.drawImage(img[renderItem.src].data, xPos + (j * (img[renderItem.src].width + renderItem.arrSpacing) * scale), yPos - height + (i * (height + (renderItem.ySpacing * scale))), img[renderItem.src].width * scale, img[renderItem.src].height * scale)
+                    }
+                }
             }
         }
     }
