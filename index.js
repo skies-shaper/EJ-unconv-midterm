@@ -1,6 +1,8 @@
 let scrollDistance = 0
 let GLOBALDEBUG
 
+let posRefs = {}
+
 const renderNode = document.getElementById("render")
 const render = renderNode.getContext("2d")
 let screenData = {
@@ -219,9 +221,9 @@ function drawDocument() {
     // render.fillStyle = "red"
     // render.fillRect(100, 200 - scrollDistance, 50, 50)
     // Debug info!
-    if (GLOBALDEBUG) {
-        render.fillText(scrollDistance, 20, 20)
-    }
+
+    render.fillText(scrollDistance, 20, 20)
+
     // render.fillText(mouseX, 20, 30)
     // render.fillText(mouseY, 20, 40)
     maxLayer = calcMaxLayer()
@@ -277,13 +279,14 @@ function renderScrnObj(renderItem) {
     }
 
     if (renderItem.yPos == auto) {
-        console.log("auto y pos")
+        // console.log("auto y pos")
     }
     if (renderItem.yPos != auto) {
-        AutoYoffset = renderItem.yPos
+        AutoYoffset = (typeof renderItem.yPos == "function") ? renderItem.yPos() : renderItem.yPos
+        // console.log(AutoYoffset)
     }
     try {
-        let renderYPos = ((renderItem.yPos == auto) ? AutoYoffset : renderItem.yPos)
+        let renderYPos = ((renderItem.yPos == auto) ? AutoYoffset : ((typeof renderItem.yPos == "function") ? renderItem.yPos() : renderItem.yPos))
         let width = typeof renderItem.width === "function" ? renderItem.width() : renderItem.width
         let xPos = typeof renderItem.xEqn === 'function' ? renderItem.xEqn() : renderItem.xEqn
         let yPos = renderYPos - scrollDistance
@@ -293,16 +296,22 @@ function renderScrnObj(renderItem) {
         } else if (typeof renderItem.scale != "undefined") {
             scale = renderItem.scale
         }
+
         height *= scale
+
+
         AutoYoffset += height * (typeof renderItem.arrHeight != "undefined" ? renderItem.arrHeight : 1) + (typeof renderItem.arrHeight != "undefined" ? renderItem.arrHeight * renderItem.ySpacing * scale : 0)
 
-        AutoYoffset += (renderItem.bottomMargin != undefined ? renderItem.bottomMargin : 0)
 
-        if (renderItem.scrollLockInterval != undefined) {
-            if (scrollDistance >= renderItem.scrollLockInterval[0] && scrollDistance <= renderItem.scrollLockInterval[1]) {
-                yPos = renderYPos - renderItem.scrollLockInterval[0]
-            } else if (scrollDistance > renderItem.scrollLockInterval[1]) {
-                yPos = renderYPos - (scrollDistance - (renderItem.scrollLockInterval[1] - renderItem.scrollLockInterval[0]))
+        AutoYoffset += (typeof renderItem.bottomMargin != "undefined" ? renderItem.bottomMargin : 0)
+
+        let scrollLockInterval = (typeof renderItem.scrollLockInterval == "function") ? renderItem.scrollLockInterval() : renderItem.scrollLockInterval
+
+        if (scrollLockInterval != undefined) {
+            if (scrollDistance >= scrollLockInterval[0] && scrollDistance <= scrollLockInterval[1]) {
+                yPos = renderYPos - scrollLockInterval[0]
+            } else if (scrollDistance > scrollLockInterval[1]) {
+                yPos = renderYPos - (scrollDistance - (scrollLockInterval[1] - scrollLockInterval[0]))
             } else {
                 yPos = renderYPos - scrollDistance
             }
@@ -313,6 +322,11 @@ function renderScrnObj(renderItem) {
         else {
             yPos += height
         }
+
+        if (typeof renderItem.ref != "undefined") {
+            posRefs[renderItem.ref] = AutoYoffset
+        }
+
         switch (renderItem.type) {
 
             case "text": {
@@ -329,7 +343,6 @@ function renderScrnObj(renderItem) {
                 break;
             }
             case "animObj": {
-
                 try {
                     render.drawImage(img[renderItem.src].data, xPos, yPos - height, img[renderItem.src].width * scale, img[renderItem.src].height * scale)
                 }

@@ -12,7 +12,7 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 30,
-        scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+        // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
     },
     {
         type: "text",
@@ -22,40 +22,102 @@ let renderDataAdditions = [
         yPos: auto,
         height: auto,
         leftMargin: 100,
-        scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+        // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
     },
     {
         type: "text",
-        content: () => { return `  Yet we have built hundreds of datacenters to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true quantities of resources these centers consume is subject only to guesswork. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI datacenters by the year 2027.` },
+        content: () => { return `  Yet we've built hundreds of datacenters to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true quantities of resources these centers consume is subject only to guesswork. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI datacenters by the year 2027.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
         height: auto,
         leftMargin: 100,
         bottomMargin: 100,
-        scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+        // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+    }, {
+        type: "text",
+        content: () => { return "" },
+        fontSize: 2,
+        fillColor: "#25292bff",
+        yPos: auto,
+        debug: true,
+        height: auto,
+        leftMargin: 100,
+
+        ref: "endResources"
     },
+    // current political analysis
     {
+        type: "text",
+        content: () => textObjs.power_1,
+        fontSize: 30,
+        fillColor: "#25292bff",
+        yPos: () => { return posRefs.scrst + 5 },
+        height: auto,
+        leftMargin: 100,
+        bottomMargin: 5,
+        scrollLockInterval() { return [posRefs.endResources - 100, posRefs.endResources + 300] }
+    }, {
+        type: "text",
+        content: () => textObjs.power_2,
+        fontSize: 30,
+        fillColor: "#25292bff",
+        yPos() {
+            let a = posRefs.scrst + 403 + 50 + distributeText(textObjs.power_1, screenData.width - 200).length * this.fontSize
+            return a
+        },
+        height: auto,
+        leftMargin: 100,
+        scrollLockInterval() { let a = distributeText(textObjs.power_1, screenData.width - 200).length * this.fontSize; return [posRefs.endResources + 300 + a, posRefs.endResources + 750] }
+    }, {
         type: "text",
         content: () => "Part two - Energy",
         fontSize: 60,
         fillColor: "#006600ff",
-        yPos: auto,
+        yPos: () => { return posRefs.endResources - 50 },
         height: auto,
         leftMargin: 100,
         bottomMargin: 30,
-        // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+        scrollLockInterval: () => { return [posRefs.endResources - 100, posRefs.endResources + 750] }
+    }, {
+        type: "animObj",
+        src: "screenshot",
+        xEqn: (screenData.width / 2) - (811 / 2),
+        height: 403,
+        width: 811,
+        yPos: () => { return posRefs.endResources + 50 },
+        ref: "scrst",
+        scrollLockInterval: () => { return [posRefs.endResources - 100, posRefs.endResources + 750] }
     },
+    {
+        type: "rect",
+        fillColor: screenData.fills.highligter,
+        height: 20,
+        xEqn: () => { return (screenData.width / 2) - (811 / 2) + 655 },
+        yPos: () => { return posRefs.endResources + 65 },
+        width: () => { return Math.min(Math.max(scrollDistance - posRefs.endResources + 300, 0), 90) },
+        scrollLockInterval: () => { return [posRefs.endResources - 100, posRefs.endResources + 750] }
+    },
+    {
+        type: "rect",
+        fillColor: screenData.fills.highligter,
+        height: 20,
+        xEqn: () => { return (screenData.width / 2) - (811 / 2) + 15 },
+        yPos: () => { return posRefs.endResources + 95 },
+        width: () => { return Math.min(Math.max(scrollDistance - posRefs.endResources + 350, 0), 645) },
+        scrollLockInterval: () => { return [posRefs.endResources - 100, posRefs.endResources + 750] }
+    },
+    // RESOURCES
     {
         type: "text",
         content: () => "Part three - Resources",
         fontSize: 60,
         fillColor: "#25292bff",
-        yPos: positionRefNodes.Eorder,
+        yPos: () => { return posRefs.scrst + 1000 + distributeText(textObjs.power_1).length * 30 + distributeText(textObjs.power_2).length * 30 + distributeText(textObjs.power_1).length * 30 },
         height: auto,
         leftMargin: 100,
         bottomMargin: 30,
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
+        ref: "resStart"
     }, {
         type: "text",
         content: () => "The production individual phone or laptop, bought once by an individual every few years results in a fairly low amount of resource extraction, resulting in little impact on how many resources are reaped from the earth and refined in unethical practices created from centuries of colonialism.",
@@ -65,7 +127,6 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 10,
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
     }, {
         type: "animObj",
         src: "phone",
@@ -74,19 +135,16 @@ let renderDataAdditions = [
         width: 400,
         yPos: auto,
         debug: true,
-        scale: () => { return Math.min(1, Math.max(0.05, (positionRefNodes.Eorder - scrollDistance) / screenData.height)) },
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
+        scale: () => { return Math.min(1, Math.max(0.05, (posRefs.resStart - scrollDistance) / screenData.height)) },
     }, {
         type: "text",
         content: () => { return "But what about ten?" },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
-        debug: true,
         height: auto,
         leftMargin: 100,
         bottomMargin: 10,
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
     }, {
         type: "imgArr",
         src: "phone",
@@ -99,9 +157,9 @@ let renderDataAdditions = [
         yPos: auto,
         ySpacing: 0,
 
-        debug: true,
-        scale: () => { return Math.min(1, Math.max(0.05, (positionRefNodes.Eorder - scrollDistance) / screenData.height)) },
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
+        scale: () => {
+            return Math.min(1, Math.max(0.05, (posRefs.resStart - scrollDistance) / screenData.height))
+        },
     }, {
         type: "text",
         content: () => { return "Or one hundred?" },
@@ -113,7 +171,6 @@ let renderDataAdditions = [
         leftMargin: 100,
         bottomMargin: 10,
 
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
     }, {
         type: "imgArr",
         src: "phone",
@@ -125,9 +182,10 @@ let renderDataAdditions = [
         height: 681,
         width: 400,
         yPos: auto,
-        debug: true,
-        scale: () => { return Math.min(1, Math.max(0.05, (positionRefNodes.Eorder - scrollDistance) / screenData.height)) },
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
+
+        scale: () => {
+            return Math.min(1, Math.max(0.05, (posRefs.resStart - scrollDistance) / screenData.height))
+        },
     }, {
         type: "text",
         content: () => { return "Or thirty thousand?" },
@@ -138,13 +196,11 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 10,
-
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
     }, {
         type: "imgArr",
         src: "phone",
-        arrWidth: 100,
-        arrHeight: 300,
+        arrWidth: ((screenData.width - 200) / (.025 * 500)),
+        arrHeight: 1000 / ((screenData.width - 200) / (.025 * 500)),
         arrSpacing: 100,
         ySpacing: 100,
         xEqn: 100,
@@ -152,11 +208,10 @@ let renderDataAdditions = [
         width: 400,
         yPos: auto,
         debug: true,
-        scale: () => { return Math.min(1, Math.max(0.025, (positionRefNodes.Eorder + 100 - scrollDistance) / screenData.height)) },
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
+        scale: () => { return Math.min(1, Math.max(0.025, (posRefs.resStart + 100 - scrollDistance) / screenData.height)) },
     }, {
         type: "text",
-        content: () => { return "  That's the kind of number that shapes an industry. And 30,000 is a 2023 estimate of the number of GPUs (Graphics Processing Units - a component critical to training and running AI models) that the company NVIDIA would sell to OpenAI for ChatGPT." },
+        content: () => { return "  That's the kind of number that shapes an industry. And 30,000 is only a 2023 estimate of the number of GPUs (Graphics Processing Units - a component critical to training and running AI models) that the company NVIDIA would sell to OpenAI (just one company!) for an earlier version of ChatGPT. (Just one of their products! Image and video generation take a world more of processing power.)" },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -164,8 +219,6 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 10,
-
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
     }, {
         type: "text",
         content: () => { return "  That's much closer to the beginning of the AI boom. The number of chips and computing units manufactured has skyrocketed past it, to the point where NVIDIA has become one of the world's highest-valued companies, in the trillions of dollars, at times surpassing both Apple and Microsoft." },
@@ -176,35 +229,29 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 10,
-
-        // scrollLockInterval: [positionRefNodes.Eorder - 50, positionRefNodes.Eorder + (2 * screenData.width)]
+    }, {
+        type: "text",
+        content: () => { return "  Along with the disastrous outcome of an increase in mining of heavy metals, the state of landfills (especially those holding hazardous waste) in the united states disproportionately impacts people of color and other minority groups. A substantial increase in E-waste as GPU clusters die will correlate with an increase in corporate waste and toxins dumped into these locations." },
+        fontSize: 30,
+        fillColor: "#25292bff",
+        yPos: auto,
+        debug: true,
+        height: auto,
+        leftMargin: 100,
+        bottomMargin: 30,
+    }, {
+        type: "text",
+        content: () => { return "  Although in its direct actions, the generative AI market does not aim to directly perpetrate environmental injustices, its indirect impacts are widespread causing wide upheaval and with the capacity to negatively impact the lives of many of those most already vulnerable to environmental harms and continue to perpetrate injustice." },
+        fontSize: 30,
+        fillColor: "#25292bff",
+        yPos: auto,
+        debug: true,
+        height: auto,
+        leftMargin: 100,
+        bottomMargin: 10,
     }
-    //current political analysis
-    // {
-    //     type: "animObj",
-    //     src: "screenshot",
-    //     xEqn: (screenData.width / 2) - (811 / 2),
-    //     height: 403,
-    //     width: 811,
-    //     yPos: positionRefNodes.Eorder,
-    //     scrollLockInterval: [positionRefNodes.Eorder - 100, positionRefNodes.Eorder + (2 * screenData.height)]
-    // },
-    // {
-    //     type: "rect",
-    //     fillColor: screenData.fills.highligter,
-    //     height: 20,
-    //     xEqn: () => { return (screenData.width / 2) - (811 / 2) + 655 },
-    //     yPos: positionRefNodes.Eorder + 20,
-    //     width: () => { return Math.min(Math.max(scrollDistance - positionRefNodes.Eorder + 300, 0), 90) },
-    //     scrollLockInterval: [positionRefNodes.Eorder - 100, positionRefNodes.Eorder + (2 * screenData.height)]
-    // },
-    // {
-    //     type: "rect",
-    //     fillColor: screenData.fills.highligter,
-    //     height: 20,
-    //     xEqn: () => { return (screenData.width / 2) - (811 / 2) + 15 },
-    //     yPos: positionRefNodes.Eorder + 45,
-    //     width: () => { return Math.min(Math.max(scrollDistance - positionRefNodes.Eorder + 350, 0), 645) },
-    //     scrollLockInterval: [positionRefNodes.Eorder - 100, positionRefNodes.Eorder + (2 * screenData.height)]
-    // }
 ]
+let textObjs = {
+    power_1: "This increase in water usage coincides with a rise in investment in fossil fuels and lowering of regulatory power in the United States' federal government. Trump's Executive Order 14241 specifically mentions “Emerging technologies” as an impetus for domestic energy production (“including coal”). This is no coincidence. The power consumption requirements of AI datacenters at scale have outpaced the rate of growth in sustainable energy. This has slowed the green energy transition, keeping coal plants open as power needs balloon. The order also specifies how coal can be used 'in any weather condition' - no unimportant point: AI datacenters are subject to near-constant demand, substantially increasing their power draw.",
+    power_2: "This will increase the environmental burden on margianalized communities, furthering the impact of fossil fuels  the people who can least afford it."
+}
