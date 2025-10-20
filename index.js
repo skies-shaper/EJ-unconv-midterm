@@ -1,6 +1,6 @@
 let scrollDistance = 0
 let GLOBALDEBUG
-
+let displayedCredits = []
 let posRefs = {}
 
 const renderNode = document.getElementById("render")
@@ -24,6 +24,7 @@ let img = {}
 let credits = [
     { text: "Inspiration from graphic visualizations at https://pudding.cool", yRanges: [[0, 100000]] },
     { text: "Font - National Park (Google Fonts)", yRanges: [[0, 100000]] },
+    { text: "test credit yay!" }
 ]
 
 let positionRefNodes = {
@@ -117,12 +118,15 @@ window.addEventListener("wheel", (e) => {
     if (scrollDistance < 0) {
         scrollDistance = 0
     }
+    localStorage.setItem("scrollDist", scrollDistance)
+
     for (let i = 0; i < anchors.length; i++) {
         if (scrollDistance > anchors[i]) {
             currentAnchor = i
             return
         }
     }
+
 })
 
 let globalRenderInterval
@@ -130,6 +134,7 @@ let autoscrollAcc
 
 function screenUpdate() {
     ticks++
+    displayedCredits = [1]
     if (autoScrolling) {
         let s = (anchors[autoscrollTo] - scrollFrom) //distance to travel //target time = 1 second, 100 fps
         scrollDistance += s / 100 + autoscrollAcc
@@ -176,6 +181,9 @@ function renderNextButton() {
 }
 
 function init() {
+    if (localStorage.getItem("scrollDist")) {
+        scrollDistance = isNaN(Number(localStorage.getItem("scrollDist"))) ? 0 : Number(localStorage.getItem("scrollDist"))
+    }
     for (let i in renderDataAdditions) {
         renderData.push(renderDataAdditions[i])
     }
@@ -330,7 +338,14 @@ function renderScrnObj(renderItem) {
         switch (renderItem.type) {
 
             case "text": {
+                if (yPos < (-height) || yPos > (screenData.height + height)) {
+                    break;
+                }
+                if (typeof renderItem.credits != "undefined") {
+                    displayedCredits.push(renderItem.credits)
+                }
                 if (renderItem.leftMargin == "centerText") {
+
                     for (let i = 0; i < textDist.length; i++) {
                         render.fillText(textDist[i], (screenData.width - render.measureText(textDist[i]).width) / 2, yPos + i * renderItem.fontSize)
                     }
@@ -384,35 +399,28 @@ function renderCreditsPopup() {
     let CB_offsetX = 10
     let CB_offsetY = 10
     let CB_bigWidth = 140
-    let CB_bigHeight = 4
+    let CB_bigHeight = CB_smallHeight + 4
     let sum = 0
     setFont(10)
-    for (let i = 0; i < credits.length; i++) {
-        for (let j = 0; j < credits[i].yRanges.length; j++) {
-            if (scrollDistance >= credits[i].yRanges[j][0] && scrollDistance <= credits[i].yRanges[j][1]) {
-                let dist = distributeText("[" + [i + 1] + "]: " + credits[i].text, CB_bigWidth - 2)
-                sum++
-                CB_bigHeight += 10
-                for (let j = 1; j < dist.length; j++) {
-                    CB_bigHeight += 10
-                    sum++
-                }
-                break;
-            }
+    for (let i = 0; i < displayedCredits.length; i++) {
+        let dist = distributeText("[" + (displayedCredits[i] + 1) + "]: " + credits[displayedCredits[i]].text, CB_bigWidth - 2)
+        sum++
+        CB_bigHeight += 10
+        for (let j = 1; j < dist.length; j++) {
+            CB_bigHeight += 10
+            sum++
         }
+        break;
     }
 
     render.fillRect(screenData.width - (CB_smallWidth + CB_offsetX), screenData.height - (CB_smallHeight + CB_offsetY), CB_smallWidth, CB_smallHeight)
 
     let citationText = "1"
-    for (let i = 1; i < credits.length; i++) {
-        for (let j = 0; j < credits[i].yRanges.length; j++) {
+    for (let i = 1; i < displayedCredits.length; i++) {
+        citationText += ", " + (displayedCredits[i] + 1)
 
-            if (scrollDistance >= credits[i].yRanges[j][0] && scrollDistance <= credits[i].yRanges[j][1]) {
-                citationText += ", " + (i + 1)
-            }
-        }
     }
+
     setFont(10)
     render.fillStyle = "black"
     let d = distributeText(citationText, CB_smallWidth - 5)
@@ -427,18 +435,15 @@ function renderCreditsPopup() {
         render.fillRect(screenData.width - (CB_bigWidth + CB_offsetX), screenData.height - (CB_bigHeight + CB_offsetX), CB_bigWidth, CB_bigHeight)
         let sum = 0
         render.fillStyle = "black"
-        for (let i = 0; i < credits.length; i++) {
-            for (let j = 0; j < credits[i].yRanges.length; j++) {
-                if (scrollDistance >= credits[i].yRanges[j][0] && scrollDistance <= credits[i].yRanges[j][1]) {
-                    let dist = distributeText("[" + [i + 1] + "]: " + credits[i].text, CB_bigWidth - 2)
-                    render.fillText(dist[0], screenData.width - CB_bigWidth - CB_offsetX + 2, screenData.height - CB_bigHeight + sum * 10)
-                    sum++
-                    for (let j = 1; j < dist.length; j++) {
-                        render.fillText(dist[j], screenData.width - CB_bigWidth + 10, screenData.height - CB_bigHeight + sum * 10)
-                        sum++
-                    }
-                    break;
-                }
+
+        for (let i = 0; i < displayedCredits.length; i++) {
+            let dist = distributeText("[" + ((i > 0) ? (displayedCredits[i] + 1) : 1) + "]: " + credits[displayedCredits[i]].text, CB_bigWidth - 2)
+            render.fillText(dist[0], screenData.width - CB_bigWidth - CB_offsetX + 2, screenData.height - CB_bigHeight + sum * 10)
+
+            sum++
+            for (let j = 1; j < dist.length; j++) {
+                render.fillText(dist[j], screenData.width - CB_bigWidth + 10, screenData.height - CB_bigHeight + sum * 10)
+                sum++
             }
         }
     }
