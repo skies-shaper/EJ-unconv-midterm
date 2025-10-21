@@ -301,7 +301,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  When we look at the settler colonialism of the Americas we see land, a sacred, communal thing, taken and treated like unowned property, fresh for the taking, becoming free capital and speeding America on its way to a powerful economy.",
+        content: "  When we look at the settler colonialism of the Americas we see land, a sacred, communal thing, taken and treated like unowned property, fresh for the taking, becoming free capital and speeding America on its way to a powerful economy. We see ancient monuments to ancient cultures being destroyed in the name of indiustrialization",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -310,7 +310,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  What interesting parallels, then, the rise of Artificial Intelligence demonstrates. With hundreds of gigabytes of human thought and creation and culture scraped mercilessly without consulation or payment a public good, accessible to everyone, becomes stolen and regurgitated into a service that then begins to destroy the very thing that gave it life.",
+        content: "  What interesting parallels, then, the rise of Artificial Intelligence demonstrates. With hundreds of gigabytes of human thought and creation and culture scraped mercilessly without consulation or payment, a public good, accessible to everyone, becomes stolen and regurgitated into a service that then begins to destroy the very thing that gave it life. Art made by people still existing, but hidden under layers and layers of endlessly-proliferated slop.",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -319,7 +319,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  This ex of course on a wholly separate scale from the events that led to the genocide of millions that was perpetrated by European colonialism. But it speaks to the tendencies of a capitalist society that, even in what is lauded as the future, cultures and human expression are stolen and generalized away from uniqueness for the sake of profit and power for the elite. It's important to note that groups whose cultures are already traditionally underrepresented in digital spaces will see this problem exacerbated as AI reduces the most-visible online parts of their culture to whatever incomplete notions of those cultures were fed into its maw. All this in the name of Efficiency. In the name of Progress. In the name of Advancement. ",
+        content: "  This exists of course on a wholly separate scale from the events that led to the genocide of millions that was perpetrated by European colonialism. But it speaks to the tendencies of a capitalist society that, even in what is lauded as the future, cultures and human expression are stolen and generalized away from uniqueness for the sake of profit and power for the elite. It's important to note that groups whose cultures are already traditionally underrepresented in digital spaces will see this problem exacerbated as AI reduces the most-visible online parts of their culture to whatever incomplete notions of those cultures were fed into its maw. All this in the name of Efficiency. In the name of Progress. In the name of Advancement. ",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
