@@ -22,9 +22,21 @@ window.onresize = () => {
 }
 let img = {}
 let credits = [
-    { text: "Inspiration from graphic visualizations at https://pudding.cool", yRanges: [[0, 100000]] },
-    { text: "Font - National Park (Google Fonts)", yRanges: [[0, 100000]] },
-    { text: "test credit yay!" }
+    "Inspiration from graphic visualizations at https://pudding.cool",
+    "Font:  National Park (Google Fonts)",
+    "https://www.npr.org/ - Billions of people lack access to clean drinking water, U.N. report finds",
+    "https://www.whitehouse.gov/ - executive order 14241",
+    "https://www.forbes.com/ - Why Big Corporations Are Quietly Abandoning Their Climate Commitments?",
+    "https://www.pbs.org/ - PBS News Weekend - The growing environmental impact of AI data centers'energy demands",
+    "https://www.brookings.edu/ - AI infrastructure's environmental costs clash with Pacific Island nations' needs",
+    "https://www.brookings.edu/ -  The US must balance climate justice challenges in the era of artificial intelligence",
+    "https://www.youtube.com/ - Should I feel Guilty using AI - Simon Clark",
+    "The Principles of Environmental Justice",
+    "https://direct.mit.edu/ -  Generative AI and Social Media May Exacerbate the Climate Crisis Open Access ",
+    "https://www.datacentermap.com/",
+    "https://water.usgs.gov/ - Unequal access to water",
+    "https://www.trendforce.com/ - TrendForce Says with Cloud Companies Initiating AI Arms Race, GPU Demand from ChatGPT Could Reach 30,000 Chips as It Readies for Commercialization",
+    "The Guardian - Are we living in a golden age of stupidity?"
 ]
 
 let positionRefNodes = {
@@ -48,7 +60,11 @@ let renderDataItemTemplates = {
 let scrollFrom = -1
 
 let anchors = [
-    0, 2000, 2200
+    () => { return posRefs.SKIP_1 },
+    () => { return posRefs.SKIP_2 },
+    () => { return posRefs.resStart },
+    () => { return posRefs.SKIP_4 },
+    () => { return posRefs.SKIP_5 }
 ]
 
 let auto = 101001
@@ -57,11 +73,11 @@ let renderData = [
     {
         type: "text",
         fontSize: 80,
-        content: "Environmental Justice in the age of Big Data and Artificial Intelligence",
+        content: "Environmental Justice in the age of Generative Artificial Intelligence",
         fillColor: screenData.fills.neatGreen,
         leftMargin: "centerText",
         yPos: 10,
-        scrollLockInterval: [0, distributeText("Environmental Justice in the age of Big Data and Artificial Intelligence").length * 80],
+        scrollLockInterval: [0, distributeText("Environmental Justice in the age of Generative Artificial Intelligence").length * 80],
         height: auto
     },
     {
@@ -108,7 +124,7 @@ renderNode.addEventListener("mouseup", () => {
 //         scrollDistance++
 //     }
 // })
-let currentAnchor = 0
+let currentAnchor = -1
 let autoScrolling = false
 window.addEventListener("wheel", (e) => {
     if (autoScrolling) {
@@ -136,20 +152,22 @@ function screenUpdate() {
     ticks++
     displayedCredits = [1]
     if (autoScrolling) {
-        let s = (anchors[autoscrollTo] - scrollFrom) //distance to travel //target time = 1 second, 100 fps
+        let s = (getAnchor(autoscrollTo) - scrollFrom) //distance to travel //target time = 1 second, 100 fps
+
         scrollDistance += s / 100 + autoscrollAcc
-        if ((anchors[autoscrollTo] - scrollDistance) / s > .5) {
+        if ((getAnchor(autoscrollTo) - scrollDistance) / s > .5) {
             autoscrollAcc += s / 200
+
         }
         else {
             autoscrollAcc -= s / 200
         }
         autoscrollAcc = Math.max(autoscrollAcc, 0)
     }
-    if ((scrollDistance >= anchors[autoscrollTo] - 1) && autoScrolling) {
+    if ((scrollDistance >= getAnchor(autoscrollTo) - 1) && autoScrolling) {
         autoScrolling = false
         currentAnchor++
-        scrollDistance = anchors[autoscrollTo]
+        scrollDistance = getAnchor(autoscrollTo)
     }
     setFont(10)
     render.clearRect(0, 0, screenData.width, screenData.height)
@@ -177,6 +195,21 @@ function renderNextButton() {
             }
         }
     })
+    if (mouseInRegion(10, screenData.height - 50, 40, 40)) {
+        render.filter = "brightness(120%)"
+    }
+    render.drawImage(document.getElementById("arrowBox"), 10, screenData.height - 50, 40, 40)
+    renderNode.addEventListener("mouseup", () => {
+        if (mouseInRegion(10, screenData.height - 50, 40, 40)) {
+            autoScrolling = true
+
+            autoscrollAcc = 0
+            scrollFrom = scrollDistance
+            autoscrollTo = -1
+
+        }
+    })
+    render.filter = "none"
 
 }
 
@@ -226,11 +259,12 @@ function calcMaxLayer() {
 
 let AutoYoffset = 0
 function drawDocument() {
+
     // render.fillStyle = "red"
     // render.fillRect(100, 200 - scrollDistance, 50, 50)
     // Debug info!
 
-    render.fillText(scrollDistance, 20, 20)
+    // render.fillText(scrollDistance, 20, 20)
 
     // render.fillText(mouseX, 20, 30)
     // render.fillText(mouseY, 20, 40)
@@ -289,7 +323,7 @@ function renderScrnObj(renderItem) {
     if (renderItem.yPos == auto) {
         // console.log("auto y pos")
     }
-    if (renderItem.yPos != auto) {
+    if (renderItem.yPos != auto && !renderItem.doNotResetAuto) {
         AutoYoffset = (typeof renderItem.yPos == "function") ? renderItem.yPos() : renderItem.yPos
         // console.log(AutoYoffset)
     }
@@ -330,7 +364,9 @@ function renderScrnObj(renderItem) {
         else {
             yPos += height
         }
-
+        if (typeof renderItem.anchor != "undefined") {
+            anchors[renderItem.anchor - 1] = renderYPos
+        }
         if (typeof renderItem.ref != "undefined") {
             posRefs[renderItem.ref] = AutoYoffset
         }
@@ -342,7 +378,9 @@ function renderScrnObj(renderItem) {
                     break;
                 }
                 if (typeof renderItem.credits != "undefined") {
-                    displayedCredits.push(renderItem.credits)
+                    if (displayedCredits.indexOf(renderItem.credits) == -1) {
+                        displayedCredits.push(renderItem.credits)
+                    }
                 }
                 if (renderItem.leftMargin == "centerText") {
 
@@ -358,7 +396,14 @@ function renderScrnObj(renderItem) {
                 break;
             }
             case "animObj": {
-                try {
+                if (yPos < (-height) || yPos > (screenData.height + height)) {
+                    break;
+                }
+                if (typeof renderItem.credits != "undefined") {
+                    if (displayedCredits.indexOf(renderItem.credits) == -1) {
+                        displayedCredits.push(renderItem.credits)
+                    }
+                } try {
                     render.drawImage(img[renderItem.src].data, xPos, yPos - height, img[renderItem.src].width * scale, img[renderItem.src].height * scale)
                 }
                 catch (e) {
@@ -379,8 +424,15 @@ function renderScrnObj(renderItem) {
             case "imgArr": {
                 for (let i = 0; i < renderItem.arrHeight; i++) {
                     for (let j = 0; j < renderItem.arrWidth; j++) {
-                        if (yPos - height + (i * (height + (renderItem.ySpacing * scale))) > (-height) && yPos - height + (i * (height + (renderItem.ySpacing * scale))) < (screenData.height + height))
+                        if (yPos - height + (i * (height + (renderItem.ySpacing * scale))) > (-height) && yPos - height + (i * (height + (renderItem.ySpacing * scale))) < (screenData.height + height)) {
+                            if (typeof renderItem.credits != "undefined") {
+                                if (displayedCredits.indexOf(renderItem.credits) == -1) {
+                                    displayedCredits.push(renderItem.credits)
+                                }
+                            }
                             render.drawImage(img[renderItem.src].data, xPos + (j * (img[renderItem.src].width + renderItem.arrSpacing) * scale), yPos - height + (i * (height + (renderItem.ySpacing * scale))), img[renderItem.src].width * scale, img[renderItem.src].height * scale)
+                        }
+
                     }
                 }
             }
@@ -398,19 +450,13 @@ function renderCreditsPopup() {
     let CB_smallHeight = 40
     let CB_offsetX = 10
     let CB_offsetY = 10
-    let CB_bigWidth = 140
+    let CB_bigWidth = 200
     let CB_bigHeight = CB_smallHeight + 4
     let sum = 0
     setFont(10)
     for (let i = 0; i < displayedCredits.length; i++) {
-        let dist = distributeText("[" + (displayedCredits[i] + 1) + "]: " + credits[displayedCredits[i]].text, CB_bigWidth - 2)
-        sum++
-        CB_bigHeight += 10
-        for (let j = 1; j < dist.length; j++) {
-            CB_bigHeight += 10
-            sum++
-        }
-        break;
+        let dist = distributeText("[" + (displayedCredits[i] + 1) + "]: " + credits[displayedCredits[i]], CB_bigWidth - 15)
+        CB_bigHeight += 10 * dist.length
     }
 
     render.fillRect(screenData.width - (CB_smallWidth + CB_offsetX), screenData.height - (CB_smallHeight + CB_offsetY), CB_smallWidth, CB_smallHeight)
@@ -435,11 +481,12 @@ function renderCreditsPopup() {
         render.fillRect(screenData.width - (CB_bigWidth + CB_offsetX), screenData.height - (CB_bigHeight + CB_offsetX), CB_bigWidth, CB_bigHeight)
         let sum = 0
         render.fillStyle = "black"
-
+        console.log("---")
         for (let i = 0; i < displayedCredits.length; i++) {
-            let dist = distributeText("[" + ((i > 0) ? (displayedCredits[i] + 1) : 1) + "]: " + credits[displayedCredits[i]].text, CB_bigWidth - 2)
-            render.fillText(dist[0], screenData.width - CB_bigWidth - CB_offsetX + 2, screenData.height - CB_bigHeight + sum * 10)
 
+            let dist = distributeText("[" + ((i > 0) ? (displayedCredits[i] + 1) : 1) + "]: " + credits[displayedCredits[i]], CB_bigWidth - 15, true)
+            render.fillText(dist[0], screenData.width - CB_bigWidth - CB_offsetX + 2, screenData.height - CB_bigHeight + sum * 10)
+            console.log("[" + ((i > 0) ? (displayedCredits[i] + 1) : 1) + "]: " + credits[displayedCredits[i]])
             sum++
             for (let j = 1; j < dist.length; j++) {
                 render.fillText(dist[j], screenData.width - CB_bigWidth + 10, screenData.height - CB_bigHeight + sum * 10)
@@ -473,12 +520,13 @@ function setFont(pxSize) {
     render.font = pxSize + "px " + "National Park"
 }
 
-function distributeText(text, lineWidth) {
+function distributeText(text, lineWidth, splitByHyphens) {
     /*
     TO DO HERE - ADD WRAPPING FOR SUPER LONG WORDS (LIKE URLS!)
     */
     let textArray = []
     let arr = text.split(" ")
+
     let WARN = 0
     let i = 0
     while ((i < arr.length) && WARN < 1000) {
@@ -494,12 +542,20 @@ function distributeText(text, lineWidth) {
     for (let i = 0; i < textArray.length; i++) {
         textArray[i] = textArray[i].substring(0, textArray[i].length - 1)
     }
-
     if (WARN >= 998) {
         // console.log(textArray)
-        // console.log(arr)
+        if (splitByHyphens) {
+            console.log(textArray)
+        }
         return [""]
     }
     // console.log(WARN)
     return textArray
+}
+
+function getAnchor(index) {
+    if (index < 0 || index >= anchors.length) {
+        return 0
+    }
+    return anchors[index]
 }

@@ -5,13 +5,15 @@ let renderDataAdditions = [
     //Introduction
     {
         type: "text",
-        content: () => { return `Part one - Water` },
+        content: () => { return `Part one - Water and Life` },
         fontSize: 60,
         fillColor: "#2169b6ff",
         yPos: positionRefNodes["intro"],
         height: auto,
         leftMargin: 100,
         bottomMargin: 30,
+        ref: "SKIP_1",
+        anchor: 1
         // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
     },
     {
@@ -21,29 +23,50 @@ let renderDataAdditions = [
         fillColor: "#14122cff",
         yPos: auto,
         height: auto,
+        credits: 12,
         leftMargin: 100,
-        // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+        bottomMargin: 10,
+
+    }, {
+        type: "text",
+        content: () => { return `  We live in a world where a quarter of humanity is without access to a basic human right.` },
+        fontSize: 30,
+        fillColor: "#14122cff",
+        yPos: auto,
+        height: auto,
+        credits: 4,
+        leftMargin: 100,
+        bottomMargin: 10,
     },
     {
         type: "text",
-        content: () => { return `  Yet we've built hundreds of datacenters to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true quantities of resources these centers consume is subject only to guesswork. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI datacenters by the year 2027.` },
+        content: () => { return `  Yet we've built hundreds of data centers to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true levels of resources these centers consume cannot be substantiated with specificity. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI data centers by the year 2027. But data centers don't always care where their water or power are coming from. Proximity to population hubs is important for internet-connected applications. Even if those populations are in drought-prone regions of the south and southwest United States.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
         height: auto,
         credits: 2,
         leftMargin: 100,
-        bottomMargin: 100,
-        // scrollLockInterval: [positionRefNodes.intro - 100, positionRefNodes.intro * 2]
+        bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return "" },
+        content: () => { return `  These data centers are being located in population centers and cities, bringing lauded jobs. But who will be getting those jobs? Will it be those in need of them? Will the standard of living for everyone increase around these technological hubs? Undoubtedly not. And what jobs will Artificial Intelligence take away? Whose livelihoods will be automated into oblivion? Will minority groups, discriminated against and trapped within a racially oppressive society, have the same access to these new jobs as those who have always been afforded access to the cutting edge in technology?` },
+        fontSize: 30,
+        fillColor: "#14122cff",
+        yPos: auto,
+        height: auto,
+        credits: 3,
+        leftMargin: 100,
+    }, {
+        type: "text",
+        content: "",
         fontSize: 2,
         fillColor: "#25292bff",
         yPos: auto,
         debug: true,
         height: auto,
         leftMargin: 100,
+        bottomMargin: 100,
 
         ref: "endResources"
     },
@@ -57,6 +80,7 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 5,
+        credits: 4,
         scrollLockInterval() { return [posRefs.endResources - 100, posRefs.endResources + 300] }
     }, {
         type: "text",
@@ -79,6 +103,8 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 30,
+        ref: "SKIP_2",
+        anchor: 2,
         scrollLockInterval: () => { return [posRefs.endResources - 100, posRefs.endResources + 750] }
     }, {
         type: "animObj",
@@ -86,6 +112,7 @@ let renderDataAdditions = [
         xEqn: (screenData.width / 2) - (811 / 2),
         height: 403,
         width: 811,
+        credits: 3,
         yPos: () => { return posRefs.endResources + 50 },
         ref: "scrst",
         scrollLockInterval: () => { return [posRefs.endResources - 100, posRefs.endResources + 750] }
@@ -118,10 +145,11 @@ let renderDataAdditions = [
         height: auto,
         leftMargin: 100,
         bottomMargin: 30,
-        ref: "resStart"
+        ref: "resStart",
+        anchor: 3
     }, {
         type: "text",
-        content: () => "The production individual phone or laptop, bought once by an individual every few years results in a fairly low amount of resource extraction, resulting in little impact on how many resources are reaped from the earth and refined in unethical practices created from centuries of colonialism.",
+        content: () => "The production of an individual phone or laptop, bought once by an individual every few years results in a relatively low amount of resource extraction on a personal level, resulting in little impact either way on how many resources are reaped from the earth and refined in unethical practices created from centuries of colonialism.",
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -139,7 +167,7 @@ let renderDataAdditions = [
         scale: () => { return Math.min(1, Math.max(0.05, (posRefs.resStart - scrollDistance) / screenData.height)) },
     }, {
         type: "text",
-        content: () => { return "But what about ten?" },
+        content: () => { return "But what about ten devices?" },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -163,7 +191,7 @@ let renderDataAdditions = [
         },
     }, {
         type: "text",
-        content: () => { return "Or one hundred?" },
+        content: () => { return "Or one hundred devices?" },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -196,17 +224,19 @@ let renderDataAdditions = [
         debug: true,
         height: auto,
         leftMargin: 100,
+        credits: 14,
         bottomMargin: 10,
     }, {
         type: "imgArr",
         src: "phone",
         arrWidth: ((screenData.width - 200) / (.025 * 500)),
-        arrHeight: 1000 / ((screenData.width - 200) / (.025 * 500)),
+        arrHeight: 30000 / ((screenData.width - 200) / (.025 * 500)),
         arrSpacing: 100,
         ySpacing: 100,
         xEqn: 100,
         height: 681,
         width: 400,
+        bottomMargin: 10,
         yPos: auto,
         debug: true,
         scale: () => { return Math.min(1, Math.max(0.025, (posRefs.resStart + 100 - scrollDistance) / screenData.height)) },
@@ -217,6 +247,7 @@ let renderDataAdditions = [
         fillColor: "#25292bff",
         yPos: auto,
         height: auto,
+        credits: 13,
         leftMargin: 100,
         bottomMargin: 10,
     }, {
@@ -227,19 +258,21 @@ let renderDataAdditions = [
         yPos: auto,
         height: auto,
         leftMargin: 100,
+        credits: 13,
         bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return "  Along with the disastrous outcome of an increase in mining of heavy metals, the state of landfills (especially those holding hazardous waste) in the united states disproportionately impacts people of color and other minority groups. A substantial increase in E-waste as GPU clusters die will correlate with an increase in corporate waste and toxins dumped into these locations." },
+        content: () => { return "  Along with the disastrous outcome of an increase in mining of heavy metals, the state of landfills (especially those holding hazardous waste) in the United States disproportionately impacts people of color and other minority groups. A substantial increase in E-waste as GPU clusters die will correlate with an increase in corporate waste and toxins dumped into these locations." },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
         height: auto,
+        credits: 8,
         leftMargin: 100,
         bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return "  Although in its direct actions, the generative AI market does not produce novel forms of environmental injustice, the impacts of its growth are widespread, exacerbating preexisting harms and, dangerously, damaging our incentives to address those harms." },
+        content: () => { return "  The indirect impacts of the generative AI market's growth are widespread, exacerbating preexisting harms and, dangerously, damaging corporations' and governments' incentives to address those harms." },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -248,12 +281,64 @@ let renderDataAdditions = [
         bottomMargin: 100,
     }, {
         type: "text",
-        content: "Part 4 - Social impacts",
+        content: "Part 4 - Informational colonialism",
         fontSize: 60,
         fillColor: "#a75600ff",
         yPos: auto,
         leftMargin: 100,
+        ref: "SKIP_4",
         height: auto,
+        bottomMargin: 10,
+        anchor: 4
+    }, {
+        type: "text",
+        content: "  The internet is the greatest single sink of human knowledge in the history of the world. An inspiring thought, is it not? The millions of thinkers and writers and artists who have developed their craft in the cyberspace? This is perhaps a romanticization of the whole thing. But it is true that a lot of very human things have happened because of the internet and because of the connection it's brought. Not all good, not all bad. But human things.",
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        bottomMargin: 10,
+        leftMargin: 100,
+        height: auto,
+    }, {
+        type: "text",
+        content: "  When we look at the settler colonialism of the Americas, we see land, a sacred thing, taken and treated like a property that is unowned, fresh for the taking, becoming free capital and speeding America on its way to a powerful agrarian (and later, industrial) economy.",
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        leftMargin: 100,
+        bottomMargin: 10,
+        height: auto,
+    }, {
+        type: "text",
+        content: "  And what interesting parallels, then, posits the rise of Artificial Intelligence. With hundreds of gigabytes of human thought and creation and culture scraped mercilessly without consulation or payment, a public good, accessible to everyone, becomes stolen and regurgitated into a service that then proceeds to destroy the very thing that gave it life.",
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        leftMargin: 100,
+        bottomMargin: 10,
+        height: auto,
+    }, {
+        type: "text",
+        content: "  This is of course on an immensely different scale from the events that led to the genocide of millions. But it speaks to the same tendencies of a capitalist society that even in what everyone keeps saying is the future, cultures and human expression are stolen for the sake of profit and to support the elites. In the name of Efficiency. In the name of Progress. In the name of Advancement.",
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        leftMargin: 100,
+        bottomMargin: 100,
+        height: auto,
+    },
+    // PART THE FIFTH
+    {
+        type: "text",
+        content: "Part 5 - Social impacts",
+        fontSize: 60,
+        fillColor: "#a75600ff",
+        bottomMargin: 10,
+        yPos: auto,
+        leftMargin: 100,
+        ref: "SKIP_5",
+        height: auto,
+        anchor: 5
     }, {
         type: "text",
         content: "  How easy is it to make something up?",
@@ -305,7 +390,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  But the second threat is far more insidious.`,
+        content: `  But the second threat is far more concerning.`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -359,15 +444,51 @@ let renderDataAdditions = [
         type: "rect",
         xEqn: 107,
         yPos: () => { return posRefs.sWdWd - 20 },
+        doNotResetAuto: true,
         fillColor: "#291d0fff",
         width: () => {
-            let a = render.measureText(` So what ${posRefs.sWdWd - scrollDistance > -400 ? "can" : "do"} we do`).width
+            let a = render.measureText(` So what ${scrollDistance - posRefs.sWdWd > -400 ? "CAN" : "do"} we do`).width
             return Math.min(Math.max(a - (posRefs.sWdWd - scrollDistance - screenData.height / 2) / 2, 0), a)
         },
         height: 5,
+    }, {
+        type: "text",
+        content: `  We're still in the early days of the rise of Artificial Intelligence. But as it stands, dependence on AI to write, learn and develop thoughts has been demonstrated to have an adverse impact on peoples' abilities to think critically and produce novel, innovative solutions. This is a problem among adults, but could be having an impact on children and teens that is only now beginning to show its face. In a world where a majority of students use AI, how many of them will be well-equipped to tackle the future in a novel way?`,
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        credits: 14,
+        yPos: auto,
+        leftMargin: 100, bottomMargin: 20,
+        height: auto,
+    }, {
+        type: "text",
+        content: `  Because AI models do not think towards the future, and "solutions" they offer to the climate crisis are often protective of the status quo that they were trained on, not wanting to offend anyone with radical solutions.`,
+        credits: 10,
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        leftMargin: 100, bottomMargin: 20,
+        height: auto,
+    }, {
+        type: "text",
+        content: `  But it is those radical solutions that we will need in order to address and solve injustices around the world, and the fewer of them we can produce (and, just as important, the fewer of them we can get the world at large to understand), the less progress we will make towards addressing those injustices.`,
+        fontSize: 30,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        leftMargin: 100, bottomMargin: 100,
+        height: auto,
+    }, {
+        type: "text",
+        content: `Generative Artificial Intelligence is an existential threat to humanity. It has the power to do so many things, yet its outcomes harm the environment, further injustices of so many kinds, are a harm to, culture and weaken our ability to weather change.`,
+        fontSize: 40,
+        fillColor: "#3b2610ff",
+        yPos: auto,
+        leftMargin: "centerText",
+        bottomMargin: 20,
+        height: auto,
     }
 ]
 let textObjs = {
-    power_1: "This increase in water usage coincides with a rise in investment in fossil fuels and lowering of regulatory power in the United States' federal government. Trump's Executive Order 14241 specifically mentions “Emerging technologies” as an impetus for domestic energy production (“including coal”). This is no coincidence. The power consumption requirements of AI datacenters at scale have outpaced the rate of growth in sustainable energy. This has slowed the green energy transition, keeping coal plants open as power needs balloon. The order also specifies how coal can be used 'in any weather condition' - no unimportant point: AI datacenters are subject to near-constant demand, substantially increasing their power draw. It is also no coincidence that many companies have reported increases in their net emissions and begun to roll back their once-lofty climate goals. It is these goals that would restrict their access to the explosive growth and profits in the lucrative generative AI market.",
-    power_2: "This will increase the environmental burden on margianalized communities, furthering the impact of fossil fuels  the people who can least afford it."
+    power_1: "This increase in water usage coincides with a rise in investment in fossil fuels and lowering of regulatory power in the United States' federal government. Trump's Executive Order 14241 specifically mentions “Emerging technologies” as an impetus for domestic energy production (“including coal”). This is no coincidence. The power consumption requirements of AI data centers at scale have outpaced the rate of growth in sustainable energy. This has slowed the green energy transition, keeping coal plants open as power needs balloon. The order also specifies how coal can be used 'in any weather condition' - no unimportant point: data centers generally support services with near-constant demand, substantially increasing their total power draw. It is also no coincidence that many companies have reported increases in their net emissions and begun to roll back their once-ambitious climate goals. It is these goals that would restrict their access to the explosive growth and profits in the lucrative generative AI market.",
+    power_2: "This will increase the environmental burden on margianalized communities, furthering the impact of fossil fuels on the people who can least afford it."
 }
