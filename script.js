@@ -18,7 +18,7 @@ let renderDataAdditions = [
     },
     {
         type: "text",
-        content: () => { return `  We live in a country where ${scrollToNumber(26.7, 5, positionRefNodes.intro)} million people live without access to clean water devoid of toxins.` },
+        content: () => { return `  We live in a country where ${scrollToNumber(26.7, 5, positionRefNodes.intro)} million people live without access to water that is clean and devoid of toxins.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
@@ -29,7 +29,7 @@ let renderDataAdditions = [
 
     }, {
         type: "text",
-        content: () => { return `  We live in a world where a billions of people - a quarter of humanity - are without access to a basic human right.` },
+        content: () => { return `  We live in a world where a billions of people - a quarter of humanity - live without access to a basic human right.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
@@ -40,7 +40,7 @@ let renderDataAdditions = [
     },
     {
         type: "text",
-        content: () => { return `  Yet we've built hundreds of data centers to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true levels of resources these centers consume cannot be substantiated with specificity. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI data centers by the year 2027. And data centers don't always care where their water or power are coming from. Proximity to population hubs is important for internet-connected applications, So even if those populations are in drought-prone regions of the south and southwest United States the data centers will come.` },
+        content: () => { return `  Yet we've built hundreds of data centers to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true levels of resources these centers consume cannot be substantiated with specificity. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI data centers by the year 2027. And data centers don't always care where their water or power are coming from. Proximity to population hubs is important for internet-connected applications, so even if those populations are in drought-prone regions of the south and southwest United States the data centers will come.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
@@ -242,7 +242,7 @@ let renderDataAdditions = [
         scale: () => { return Math.min(1, Math.max(0.025, (posRefs.resStart + 100 - scrollDistance) / screenData.height)) },
     }, {
         type: "text",
-        content: () => { return "  That's the kind of number that shapes an industry. And 30,000 is only a 2023 estimate of the number of GPUs (Graphics Processing Units - a component critical to training and running AI models) that the company NVIDIA would sell to OpenAI (just one AI company!) for an early version of ChatGPT. (Just one of their products! Image and video generation take a world more of processing power, and modern AI models are integrated into so many more facets of daily life.)" },
+        content: () => { return "  That's the kind of number that shapes an industry. And 30,000 is only a 2023 estimate of the number of GPUs (Graphics Processing Units - a component critical to training and running AI models) that the company NVIDIA would sell to OpenAI (just one AI company!) for an early version of ChatGPT. (Just one of their products! Image and video generation take a world more processing power, and modern AI models are integrated into so many more facets of daily life.)" },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -252,7 +252,7 @@ let renderDataAdditions = [
         bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return "  30,000 chips comes from a figure much closer to the beginning of the AI boom. The number of chips and computing units manufactured for AI has skyrocketed past it, to the point where NVIDIA has become one of the world's highest-valued companies, in the trillions of dollars, at times surpassing both Apple and Microsoft." },
+        content: () => { return "  Those 30,000 chips comes from a figure much closer to the beginning of the AI boom. The number of chips and computing units manufactured for AI has skyrocketed past it, to the point where NVIDIA has become one of the world's highest-valued companies, in the trillions of dollars, at times surpassing both Apple and Microsoft." },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
