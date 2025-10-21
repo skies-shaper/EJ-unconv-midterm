@@ -29,7 +29,7 @@ let renderDataAdditions = [
 
     }, {
         type: "text",
-        content: () => { return `  We live in a world where a quarter of humanity is without access to a basic human right.` },
+        content: () => { return `  We live in a world where a billions of people - a quarter of humanity - are without access to a basic human right.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
@@ -40,7 +40,7 @@ let renderDataAdditions = [
     },
     {
         type: "text",
-        content: () => { return `  Yet we've built hundreds of data centers to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true levels of resources these centers consume cannot be substantiated with specificity. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI data centers by the year 2027. But data centers don't always care where their water or power are coming from. Proximity to population hubs is important for internet-connected applications. Even if those populations are in drought-prone regions of the south and southwest United States.` },
+        content: () => { return `  Yet we've built hundreds of data centers to support the Artificial Intelligence boom. Due to "commercial sensitivity," the true levels of resources these centers consume cannot be substantiated with specificity. But global estimates suggest that around half the yearly water withdrawl of the United Kingdom could be put towards cooling AI data centers by the year 2027. And data centers don't always care where their water or power are coming from. Proximity to population hubs is important for internet-connected applications, So even if those populations are in drought-prone regions of the south and southwest United States the data centers will come.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
@@ -50,7 +50,7 @@ let renderDataAdditions = [
         bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return `  These data centers are being located in population centers and cities, bringing lauded jobs. But who will be getting those jobs? Will it be those in need of them? Will the standard of living for everyone increase around these technological hubs? Undoubtedly not. And what jobs will Artificial Intelligence take away? Whose livelihoods will be automated into oblivion? Will minority groups, discriminated against and trapped within a racially oppressive society, have the same access to these new jobs as those who have always been afforded access to the cutting edge in technology?` },
+        content: () => { return `  These data centers are being located in population centers and cities, bringing jobs lauded as the future. But who will be getting those jobs? Will it be those in need of them? Will the standard of living for all increase around these technological hubs? Undoubtedly not. What jobs will Artificial Intelligence take away? Whose livelihoods will be automated into oblivion? Will minority groups, discriminated against and trapped within a racially oppressive society, have the same access to these new jobs as those who have always been afforded access to the cutting edge in technology? These are important questions, yet ones that are not answered in favor of the allure of Progress.` },
         fontSize: 30,
         fillColor: "#14122cff",
         yPos: auto,
@@ -242,7 +242,7 @@ let renderDataAdditions = [
         scale: () => { return Math.min(1, Math.max(0.025, (posRefs.resStart + 100 - scrollDistance) / screenData.height)) },
     }, {
         type: "text",
-        content: () => { return "  That's the kind of number that shapes an industry. And 30,000 is only a 2023 estimate of the number of GPUs (Graphics Processing Units - a component critical to training and running AI models) that the company NVIDIA would sell to OpenAI (just one company!) for an earlier version of ChatGPT. (Just one of their products! Image and video generation take a world more of processing power.)" },
+        content: () => { return "  That's the kind of number that shapes an industry. And 30,000 is only a 2023 estimate of the number of GPUs (Graphics Processing Units - a component critical to training and running AI models) that the company NVIDIA would sell to OpenAI (just one AI company!) for an early version of ChatGPT. (Just one of their products! Image and video generation take a world more of processing power, and modern AI models are integrated into so many more facets of daily life.)" },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -252,7 +252,7 @@ let renderDataAdditions = [
         bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return "  That's much closer to the beginning of the AI boom. The number of chips and computing units manufactured has skyrocketed past it, to the point where NVIDIA has become one of the world's highest-valued companies, in the trillions of dollars, at times surpassing both Apple and Microsoft." },
+        content: () => { return "  30,000 chips comes from a figure much closer to the beginning of the AI boom. The number of chips and computing units manufactured for AI has skyrocketed past it, to the point where NVIDIA has become one of the world's highest-valued companies, in the trillions of dollars, at times surpassing both Apple and Microsoft." },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -262,7 +262,7 @@ let renderDataAdditions = [
         bottomMargin: 10,
     }, {
         type: "text",
-        content: () => { return "  Along with the disastrous outcome of an increase in mining of heavy metals, the state of landfills (especially those holding hazardous waste) in the United States disproportionately impacts people of color and other minority groups. A substantial increase in E-waste as GPU clusters die will correlate with an increase in corporate waste and toxins dumped into these locations." },
+        content: () => { return "  Along with the disastrous outcome of an increase in mining of heavy metals, the state of landfills (especially those holding hazardous waste) in the United States disproportionately impacts people of color. A substantial increase in E-waste as GPU clusters fail will correlate with an increase in corporate waste and toxins dumped into these locations, and further the harms done to vulnerable populations." },
         fontSize: 30,
         fillColor: "#25292bff",
         yPos: auto,
@@ -292,7 +292,7 @@ let renderDataAdditions = [
         anchor: 4
     }, {
         type: "text",
-        content: "  The internet is the greatest single sink of human knowledge in the history of the world. An inspiring thought, is it not? The millions of thinkers and writers and artists who have developed their craft in the cyberspace? This is perhaps a romanticization of the whole thing. But it is true that a lot of very human things have happened because of the internet and because of the connection it's brought. Not all good, not all bad. But human things.",
+        content: "  The internet is the vastest single sink of human knowledge in the history of the world. An inspiring thought, is that not? The millions of thinkers and writers and artists who have developed their craft in the cyberspace? This is perhaps a romanticization of the matter. But it is true that a lot of very human things have happened because of the internet and the connection it brings. Not all good things, not all bad things. But overwhelmingly, human things.",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -301,7 +301,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  When we look at the settler colonialism of the Americas, we see land, a sacred thing, taken and treated like a property that is unowned, fresh for the taking, becoming free capital and speeding America on its way to a powerful agrarian (and later, industrial) economy.",
+        content: "  When we look at the settler colonialism of the Americas we see land, a sacred, communal thing, taken and treated like unowned property, fresh for the taking, becoming free capital and speeding America on its way to a powerful economy.",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -310,7 +310,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  And what interesting parallels, then, posits the rise of Artificial Intelligence. With hundreds of gigabytes of human thought and creation and culture scraped mercilessly without consulation or payment, a public good, accessible to everyone, becomes stolen and regurgitated into a service that then proceeds to destroy the very thing that gave it life.",
+        content: "  What interesting parallels, then, the rise of Artificial Intelligence demonstrates. With hundreds of gigabytes of human thought and creation and culture scraped mercilessly without consulation or payment a public good, accessible to everyone, becomes stolen and regurgitated into a service that then begins to destroy the very thing that gave it life.",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -319,7 +319,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  This is of course on an immensely different scale from the events that led to the genocide of millions. But it speaks to the same tendencies of a capitalist society that even in what everyone keeps saying is the future, cultures and human expression are stolen for the sake of profit and to support the elites. In the name of Efficiency. In the name of Progress. In the name of Advancement.",
+        content: "  This ex of course on a wholly separate scale from the events that led to the genocide of millions that was perpetrated by European colonialism. But it speaks to the tendencies of a capitalist society that, even in what is lauded as the future, cultures and human expression are stolen and generalized away from uniqueness for the sake of profit and power for the elite. It's important to note that groups whose cultures are already traditionally underrepresented in digital spaces will see this problem exacerbated as AI reduces the most-visible online parts of their culture to whatever incomplete notions of those cultures were fed into its maw. All this in the name of Efficiency. In the name of Progress. In the name of Advancement. ",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -349,7 +349,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  If you wanted to, how easy would it be to write an essay casting skepticism on the fact that climate change is real, or that claims there 'isn't enough evidence' to link racial segregation with poor health outcomes?",
+        content: "  If you wanted to, how easy would it be to write an essay casting skepticism on the fact that climate change is real, or one that claims there 'isn't enough evidence' to link racial segregation with statistically poorer health outcomes?",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -357,7 +357,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: "  Not hard. Perhaps. But how long would this take? How many hours or days would it take to write many of those articles, scattered across multiple websites, citing each other (or other, made up sources) for an air of authenticity?",
+        content: "  Not hard. Perhaps. But how long would this take? How many hours or days would it take to write many of those articles, scattered across the internet, having them cite each other (or other, made up sources) for an air of authenticity?",
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -365,7 +365,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  How easy would it be to make an average person read every single one of those essays and, with only a cursory glance at their content, think "well, that looks like a decently-thought out essay"?`,
+        content: `  How easy would it be to make an average person read every single one of those essays and, with only a cursory glance at their content, think "well, that looks like a decently written-out essay"?`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -373,7 +373,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  Now imagine that that work could be done with a few keystrokes, and propogated across the internet with only a minimal need for a human to look over it?`,
+        content: `  Imagine that that work could be done with a few keystrokes, and propogated across the internet with only a minimal need for a human agency?`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -382,7 +382,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  That's a first threat of Artificial Intelligence - its confidence, its ease of use, its ubiquity. How easy is it now for malicious actors to spread this sort of content? Far, far easier in the past.`,
+        content: `  That's a first threat brought by Artificial Intelligence - its confidence, its ease of use, its ubiquity. How easy it has now become for malicious actors to spread this sort of content.`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -390,7 +390,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  But the second threat is far more concerning.`,
+        content: `  But the second threat is perhaps even more concerning.`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -406,7 +406,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  People with the ability to problem-solve and think critically. Lots of them.`,
+        content: `  People with the ability to problem-solve and think critically. Not many perhaps at first, but in time lots of them.`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -453,7 +453,7 @@ let renderDataAdditions = [
         height: 5,
     }, {
         type: "text",
-        content: `  We're still in the early days of the rise of Artificial Intelligence. But as it stands, dependence on AI to write, learn and develop thoughts has been demonstrated to have an adverse impact on peoples' abilities to think critically and produce novel, innovative solutions. This is a problem among adults, but could be having an impact on children and teens that is only now beginning to show its face. In a world where a majority of students use AI, how many of them will be well-equipped to tackle the future in a novel way?`,
+        content: `  We're still in the early days of the rise of Artificial Intelligence. But as it stands, dependence on AI to write, learn and develop thoughts has been demonstrated to have an adverse impact on peoples' abilities to think critically and produce novel, innovative solutions. This is a problem among adults, but could be impacting children and teens in ways that are only now beginning to show their faces. In a world where a striking majority of students use AI, how many of them will be well-equipped to tackle the future in novel ways?`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         credits: 14,
@@ -462,7 +462,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  Because AI models do not think towards the future, and "solutions" they offer to the climate crisis are often protective of the status quo that they were trained on, not wanting to offend anyone with radical solutions.`,
+        content: `  Because AI models do not look towards the future, they are trained on the past. And "solutions" they offer to the climate crisis are often protective of the status quo that they were trained on, not wanting to upset anyone with radical solutions.`,
         credits: 10,
         fontSize: 30,
         fillColor: "#3b2610ff",
@@ -471,7 +471,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `  But it is those radical solutions that we will need in order to address and solve injustices around the world, and the fewer of them we can produce (and, just as important, the fewer of them we can get the world at large to understand), the less progress we will make towards addressing those injustices.`,
+        content: `  But it is those radical solutions that we will need in order to address and solve injustices around the world. The fewer of them we can produce (and, just as importantly, the fewer of them we can get the world at large to understand), the less progress we will be able to make towards addressing those injustices.`,
         fontSize: 30,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -479,7 +479,7 @@ let renderDataAdditions = [
         height: auto,
     }, {
         type: "text",
-        content: `Generative Artificial Intelligence is an existential threat to humanity. It has the power to do so many things, yet its outcomes harm the environment, further injustices of so many kinds, are a harm to, culture and weaken our ability to weather change.`,
+        content: `Generative Artificial Intelligence is an existential threat to humanity. It has the power to do so many things, yet its outcomes harm the environment, further injustices of so many kinds, are a harm to culture, and weaken our ability to weather change.`,
         fontSize: 40,
         fillColor: "#3b2610ff",
         yPos: auto,
@@ -489,6 +489,6 @@ let renderDataAdditions = [
     }
 ]
 let textObjs = {
-    power_1: "This increase in water usage coincides with a rise in investment in fossil fuels and lowering of regulatory power in the United States' federal government. Trump's Executive Order 14241 specifically mentions “Emerging technologies” as an impetus for domestic energy production (“including coal”). This is no coincidence. The power consumption requirements of AI data centers at scale have outpaced the rate of growth in sustainable energy. This has slowed the green energy transition, keeping coal plants open as power needs balloon. The order also specifies how coal can be used 'in any weather condition' - no unimportant point: data centers generally support services with near-constant demand, substantially increasing their total power draw. It is also no coincidence that many companies have reported increases in their net emissions and begun to roll back their once-ambitious climate goals. It is these goals that would restrict their access to the explosive growth and profits in the lucrative generative AI market.",
+    power_1: "This increase in water usage coincides with a rise in investment in fossil fuels and lowering of regulatory power in the United States' federal government. President Trump's Executive Order 14241 specifically mentions “Emerging technologies” as an impetus for increasing domestic energy production (“including coal”). This is no coincidence. The power consumption requirements of AI data centers at scale have outpaced the rate of growth in sustainable energy. This has slowed the green energy transition, keeping coal plants open as power needs balloon. The order also specifies how coal can be used 'in any weather condition' - no unimportant point: data centers generally support services with near-constant demand, substantially increasing their total power draw. It is also no coincidence that many companies have reported increases in their net emissions and begun to roll back their once-ambitious climate goals. It is these goals that would restrict their access to the explosive growth and profits in the lucrative generative AI market.",
     power_2: "This will increase the environmental burden on margianalized communities, furthering the impact of fossil fuels on the people who can least afford it."
 }
